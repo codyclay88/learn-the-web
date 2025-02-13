@@ -18,7 +18,7 @@ export function parseRequest(httpReq: string) {
     // break if we are done
     const currentLine = lines[currentLineIndex];
 
-    if (!currentLine.trim()) {
+    if (!currentLine) {
       break;
     }
 
@@ -54,8 +54,22 @@ export function createResponse(
   for (const key in headers) {
     response += `${key}: ${headers[key]}\n`;
   }
-  response += `\r\n\r\n${body}`;
+  response += `\r\n${body}\r\n`;
   return response;
 }
 
 export type HttpRequest = ReturnType<typeof parseRequest>;
+
+export function mapFileToContentType(fileName: string) {
+  if (fileName.endsWith(".html")) {
+    return "text/html";
+  }
+  if (fileName.endsWith(".css")) {
+    return "text/css";
+  }
+  if (fileName.endsWith(".js")) {
+    return "text/javascript";
+  }
+
+  return "text/plain";
+}
